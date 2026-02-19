@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lo Hago Real | Joaquín Alterman</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Trebuchet MS', 'Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f4f8',
+                            100: '#d9e2ec',
+                            200: '#bcccdc',
+                            300: '#9fb3c8',
+                            500: '#1a4e8a',
+                            600: '#103d6d',
+                            700: '#0c2e5e',
+                            900: '#081f3e',
+                            celeste: '#c4d5e7',
+                            gold: '#b08412',
+                            goldLight: '#d4af37',
+                            cream: '#f7f7f7',
+                            dark: '#051221'
+                        }
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.8s ease-out forwards',
+                        'slide-up': 'slideUp 0.8s ease-out forwards',
+                        'bounce-slow': 'bounce 2s infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Global Styles */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #fafaf9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #bcccdc;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #1a4e8a;
+        }
+
+        /* Chronicle Button Component - Adapted */
+        .chronicleButton {
+            --chronicle-button-border-radius: 0px;
+            border-radius: var(--chronicle-button-border-radius);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            line-height: 1;
+            padding: 1rem 2rem;
+            cursor: pointer;
+            border: none;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+            background: var(--chronicle-button-background, #0c2e5e);
+            color: var(--chronicle-button-foreground, #ffffff);
+            transition: background 0.4s linear, color 0.4s linear;
+            will-change: background, color;
+            position: relative;
+            min-width: 160px;
+            height: 3.5rem;
+        }
+
+        .chronicleButton:hover {
+            background: var(--chronicle-button-hover-background, #b08412);
+            color: var(--chronicle-button-hover-foreground, #ffffff);
+        }
+
+        .chronicleButton span {
+            position: relative;
+            display: block;
+            perspective: 108px;
+            height: 1em;
+        }
+
+        .chronicleButton span:nth-of-type(2) {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .chronicleButton span:nth-of-type(1) {
+            display: flex;
+            align-items: center;
+        }
+
+        .chronicleButton em {
+            font-style: normal;
+            display: inline-block;
+            color: inherit;
+            will-change: transform, opacity, color;
+            transition: transform 0.55s cubic-bezier(.645, .045, .355, 1), opacity 0.35s linear 0.2s, color 0.4s linear;
+        }
+
+        .chronicleButton span:nth-of-type(1) em {
+            transform-origin: top;
+        }
+
+        .chronicleButton span:nth-of-type(2) em {
+            opacity: 0;
+            transform: rotateX(-90deg) scaleX(.9) translate3d(0, 10px, 0);
+            transform-origin: bottom;
+        }
+
+        .chronicleButton:hover span:nth-of-type(1) em {
+            opacity: 0;
+            transform: rotateX(90deg) scaleX(.9) translate3d(0, -10px, 0);
+        }
+
+        .chronicleButton:hover span:nth-of-type(2) em {
+            opacity: 1;
+            transform: rotateX(0deg) scaleX(1) translateZ(0);
+            transition: transform 0.75s cubic-bezier(.645, .045, .355, 1), opacity 0.35s linear 0.3s, color 0.4s linear;
+        }
+
+        /* Bauhaus Card Component - Adapted for Includes */
+        .bauhaus-card {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            background-color: #ffffff;
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.1);
+            padding: 2px;
+            background-image:
+                linear-gradient(#ffffff, #ffffff),
+                linear-gradient(0deg, var(--card-accent, #b08412) 0%, #ffffff 30%, transparent 80%);
+            background-origin: border-box;
+            background-clip: content-box, border-box;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .bauhaus-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .drop-cap::first-letter {
+            font-size: 3.5rem;
+            font-weight: 700;
+            float: left;
+            line-height: 0.8;
+            margin-right: 0.1em;
+            color: #b08412;
+            font-family: 'Playfair Display', serif;
+        }
+    </style>
+</head>
+
+<body class="bg-brand-cream text-gray-800 font-sans antialiased overflow-x-hidden">
+
+    <!-- Navigation -->
+    <!-- Navigation -->
+    <nav
+        class="fixed top-0 left-0 w-screen h-24 z-50 bg-white/95 backdrop-blur-md border-b border-brand-100 shadow-sm grid place-items-center">
+        <div class="w-full text-center">
+            <img src="https://storage.googleapis.com/msgsndr/uuaiNCJCRvymWQ2ejuex/media/69660bb495f9f9cee401f126.png"
+                alt="Joaquin Alterman" class="h-16 md:h-20 w-auto inline-block mx-auto">
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative min-h-[90vh] flex flex-col items-center justify-center pt-32 pb-16 overflow-hidden">
+        <!-- Placeholder Image Background -->
+
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 w-full animate-fade-in">
+            <div class="inline-block border-b-2 border-brand-gold mb-6 pb-2">
+                <span class="text-brand-gold font-bold tracking-[0.3em] text-sm uppercase">Taller Online
+                    On-Demand</span>
+            </div>
+
+            <h1
+                class="font-serif text-5xl md:text-7xl lg:text-8xl font-bold text-brand-700 mb-6 leading-tight animate-slide-up">
+                Lo Hago <span class="italic text-brand-gold">Real</span>
+            </h1>
+
+            <div class="relative w-full max-w-4xl mx-auto mb-10 rounded-2xl shadow-2xl overflow-hidden border border-brand-100 animate-slide-up bg-brand-100/50"
+                style="animation-delay: 0.1s; min-height: 400px;">
+                <img src="https://storage.googleapis.com/msgsndr/uuaiNCJCRvymWQ2ejuex/media/695bd45ed22a28d6fda8596d.png"
+                    alt="Lo Hago Real Banner" class="w-full h-auto object-cover" fetchpriority="high" loading="eager">
+            </div>
+
+            <p class="text-xl md:text-2xl text-brand-900 mb-8 font-serif italic animate-slide-up"
+                style="animation-delay: 0.2s;">
+                "No empieces el año corriendo…<br>Empezalo eligiendo."
+            </p>
+
+            <p class="text-gray-600 max-w-2xl mx-auto mb-10 leading-relaxed text-lg animate-slide-up"
+                style="animation-delay: 0.3s;">
+                2026 · Lo Hago Real es ese punto de inflexión donde dejás de improvisar tu energía, y empezás a caminar
+                el año con un Norte claro.
+            </p>
+
+            <div class="flex flex-col sm:flex-row justify-center gap-4 animate-slide-up" style="animation-delay: 0.4s;">
+                <button onclick="document.getElementById('reservar').scrollIntoView({behavior: 'smooth'})"
+                    class="chronicleButton shadow-xl hover:shadow-2xl hover:-translate-y-1"
+                    style="--chronicle-button-background: #0c2e5e; --chronicle-button-foreground: #fff; --chronicle-button-hover-background: #b08412; --chronicle-button-hover-foreground: #fff;">
+                    <span><em>ACCEDER A LA GRABACIÓN</em></span>
+                    <span><em>ACCEDER A LA GRABACIÓN</em></span>
+                </button>
+            </div>
+            <p class="mt-6 text-sm text-brand-400 uppercase tracking-widest font-medium animate-slide-up"
+                style="animation-delay: 0.5s;">
+                USD 33 · Pago Único
+            </p>
+        </div>
+    </header>
+
+    <!-- The Problem Section -->
+    <section class="py-24 bg-white relative overflow-hidden">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <div class="order-2 md:order-1 relative">
+                    <div
+                        class="absolute -top-4 -left-4 w-full h-full border-2 border-brand-gold/30 rounded-2xl z-0 transform -rotate-3">
+                    </div>
+                    <div class="relative z-10 bg-brand-50 p-8 rounded-2xl border border-brand-100 shadow-lg">
+                        <h3 class="font-serif text-2xl text-brand-900 mb-6">Se siente así:</h3>
+                        <ul class="space-y-4">
+                            <li class="flex items-start">
+                                <span class="text-brand-gold mr-3 text-xl">✕</span>
+                                <p class="text-gray-700">Empezás con ganas… pero te dispersás rápido.</p>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-brand-gold mr-3 text-xl">✕</span>
+                                <p class="text-gray-700">Querés un cambio… pero no terminás de elegir uno.</p>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-brand-gold mr-3 text-xl">✕</span>
+                                <p class="text-gray-700">Te pesa el año anterior: cosas abiertas, emociones sin cerrar.
+                                </p>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-brand-gold mr-3 text-xl">✕</span>
+                                <p class="text-gray-700">La mente hace ruido y el cuerpo lo siente: ansiedad, apuro.</p>
+                            </li>
+                        </ul>
+                        <p class="mt-6 text-sm text-gray-500 italic border-t border-brand-200 pt-4">
+                            "Y entonces aparece el clásico “este año sí”… pero sin un Norte, el año se vuelve una lista
+                            de buenas intenciones."
+                        </p>
+                    </div>
+                </div>
+
+                <div class="order-1 md:order-2">
+                    <h2 class="font-serif text-4xl text-brand-900 mb-6 leading-tight">
+                        Hay un momento al comienzo del año...
+                    </h2>
+                    <div class="prose text-gray-600 text-lg leading-relaxed">
+                        <p class="mb-4">
+                            Donde “arranca todo” por afuera, pero por dentro todavía no sabés bien qué, para qué y dónde
+                            poner tu energía.
+                        </p>
+                        <p class="mb-4 font-medium text-brand-700">
+                            Si te pasa, no es falta de capacidad.
+                        </p>
+                        <p>
+                            Muchas veces es falta de dirección clara y de un anclaje real.
+                            <br><br>
+                            <span class="text-brand-gold font-bold text-xl block mb-2">Este taller existe para
+                                eso:</span>
+                            Para que el nuevo año no sea una promesa mental, sino una <strong>decisión anclada</strong>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Vision / Outcome -->
+    <section class="py-24 bg-brand-900 text-white relative">
+        <div
+            class="absolute top-0 right-0 w-64 h-64 bg-brand-gold/10 rounded-full blur-3xl transform translate-x-1/3 -translate-y-1/3">
+        </div>
+        <div class="max-w-4xl mx-auto px-4 text-center mb-16">
+            <span class="text-brand-gold font-bold tracking-[0.3em] uppercase text-xs mb-4 block">Resultados</span>
+            <h2 class="font-serif text-4xl md:text-5xl mb-6">Imaginate arrancar así:</h2>
+            <p class="text-brand-100 text-xl font-light">Te levantás y sentís claridad. No motivación inflada. Claridad
+                simple.</p>
+        </div>
+
+        <div class="max-w-6xl mx-auto px-4 grid md:grid-cols-3 gap-8">
+            <!-- Card 1 -->
+            <div
+                class="bg-brand-800 p-8 rounded-xl border border-brand-700 hover:transform hover:-translate-y-2 transition-all duration-300">
+                <div class="text-4xl mb-4">🧭</div>
+                <h3 class="font-serif text-xl font-bold text-white mb-3">Tu Norte Claro</h3>
+                <p class="text-brand-200 text-sm">Sabés cuál es tu dirección y tenés herramientas para volver a ella
+                    cuando te dispersás.</p>
+            </div>
+            <!-- Card 2 -->
+            <div
+                class="bg-brand-800 p-8 rounded-xl border border-brand-700 hover:transform hover:-translate-y-2 transition-all duration-300">
+                <div class="text-4xl mb-4">🔥</div>
+                <h3 class="font-serif text-xl font-bold text-white mb-3">Energía Pura</h3>
+                <p class="text-brand-200 text-sm">Identificás qué energía te potencia y qué cosas ya no van más.
+                    Limpieza real.</p>
+            </div>
+            <!-- Card 3 -->
+            <div
+                class="bg-brand-800 p-8 rounded-xl border border-brand-700 hover:transform hover:-translate-y-2 transition-all duration-300">
+                <div class="text-4xl mb-4">🌱</div>
+                <h3 class="font-serif text-xl font-bold text-white mb-3">3 Semillas</h3>
+                <p class="text-brand-200 text-sm">Tus intenciones que ordenan el año. Aprendés a distinguir lo esencial
+                    de lo accesorio.</p>
+            </div>
+        </div>
+
+        <div class="max-w-3xl mx-auto px-4 mt-16 text-center border-t border-brand-700 pt-12">
+            <h3 class="font-serif text-2xl text-white mb-8">Beneficios Tangibles</h3>
+            <div class="grid md:grid-cols-2 gap-4 text-left">
+                <div class="flex items-center text-brand-100">
+                    <span class="w-2 h-2 bg-brand-gold rounded-full mr-3"></span>
+                    Cerrás el ciclo anterior con paz y honestidad
+                </div>
+                <div class="flex items-center text-brand-100">
+                    <span class="w-2 h-2 bg-brand-gold rounded-full mr-3"></span>
+                    Elegís con coherencia interna
+                </div>
+                <div class="flex items-center text-brand-100">
+                    <span class="w-2 h-2 bg-brand-gold rounded-full mr-3"></span>
+                    Traducís visión a pasos concretos para Enero
+                </div>
+                <div class="flex items-center text-brand-100">
+                    <span class="w-2 h-2 bg-brand-gold rounded-full mr-3"></span>
+                    Menos ruido mental, más dirección física
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Includes Section -->
+    <section class="py-24 bg-brand-50">
+        <div class="max-w-5xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="font-serif text-4xl font-bold text-brand-900 mb-6">Qué Incluye Este Taller</h2>
+                <p class="text-gray-600">Todo lo que necesitas para tu ingeniería interna.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Main Includes -->
+                <div class="bauhaus-card p-8 bg-white" style="--card-accent: #0c2e5e;">
+                    <h3 class="font-serif text-2xl text-brand-900 mb-6 border-b border-gray-100 pb-4">Acceso Completo
+                    </h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-3">✔</span>
+                            <span class="text-gray-700"><strong>Masterclass Grabada (2 horas)</strong> — práctica guiada
+                                completa</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-3">✔</span>
+                            <span class="text-gray-700"><strong>Workbook “Lo Hago Real” (PDF)</strong> apoyo práctico
+                                descargable</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-3">✔</span>
+                            <span class="text-gray-700"><strong>Plantilla para Vision Board</strong></span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-3">✔</span>
+                            <span class="text-gray-700"><strong>Meditación guiada</strong> de regalo</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-3">✔</span>
+                            <span class="text-gray-700"><strong>Acceso de por vida</strong> a través de nuestro
+                                Classroom</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Agenda -->
+                <div class="bauhaus-card p-8 bg-white" style="--card-accent: #b08412;">
+                    <h3 class="font-serif text-2xl text-brand-900 mb-6 border-b border-gray-100 pb-4">Agenda del
+                        Encuentro</h3>
+                    <div class="space-y-6 relative pl-4 border-l-2 border-brand-100">
+                        <div class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 rounded-full bg-brand-300"></span>
+                            <p class="text-xs font-bold text-brand-500 uppercase tracking-widest mb-1">Min 0–10</p>
+                            <p class="text-gray-800 text-sm">Aterrizaje + Intención (Venus Star Point)</p>
+                        </div>
+                        <div class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 rounded-full bg-brand-300"></span>
+                            <p class="text-xs font-bold text-brand-500 uppercase tracking-widest mb-1">Min 10–30</p>
+                            <p class="text-gray-800 text-sm">Cierre consciente: inventario + soltar</p>
+                        </div>
+                        <div class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 rounded-full bg-brand-gold"></span>
+                            <p class="text-xs font-bold text-brand-gold uppercase tracking-widest mb-1">Min 30–50</p>
+                            <p class="text-gray-800 text-sm font-medium">Anclaje guiado (energético/espiritual)</p>
+                        </div>
+                        <div class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 rounded-full bg-brand-300"></span>
+                            <p class="text-xs font-bold text-brand-500 uppercase tracking-widest mb-1">Min 50–80</p>
+                            <p class="text-gray-800 text-sm">Visión + Elección de 3 intenciones-semilla</p>
+                        </div>
+                        <div class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 rounded-full bg-brand-300"></span>
+                            <p class="text-xs font-bold text-brand-500 uppercase tracking-widest mb-1">Min 80–120</p>
+                            <p class="text-gray-800 text-sm">Vision Board paso a paso + Pacto + Hoja de ruta</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bio Section -->
+    <section class="py-24 bg-white border-t border-brand-100">
+        <div class="max-w-5xl mx-auto px-4">
+            <div class="grid md:grid-cols-3 gap-12 items-center">
+                <div class="md:col-span-1">
+                    <div class="relative rounded-2xl overflow-hidden shadow-xl aspect-[3/4]">
+                        <img src="https://assets.cdn.filesafe.space/uuaiNCJCRvymWQ2ejuex/media/698b6cc38682155edc61e55e.png"
+                            alt="Joaquín Alterman" class="w-full h-full object-cover">
+                    </div>
+                </div>
+                <div class="md:col-span-2">
+                    <span
+                        class="text-brand-gold font-bold tracking-[0.3em] uppercase text-xs mb-4 block">Facilitador</span>
+                    <h2 class="font-serif text-3xl text-brand-900 mb-6">Sobre Joaquín — Creador de Tierra Dorada</h2>
+                    <p class="text-gray-600 leading-relaxed mb-6">
+                        Ingeniero, coach, escritor, músico e influencer. Creador de <strong>Nodriza</strong>,
+                        <em>Entusiasmados por Vivir</em> y el <em>Manifiesto del Amor Álmico</em>. Ha acompañado a miles
+                        de personas alrededor del mundo en procesos de transformación profunda.
+                    </p>
+                    <h3 class="font-bold text-brand-900 mb-4 text-sm uppercase tracking-wide">Por qué confiar en este
+                        espacio:</h3>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li class="flex items-center"><span
+                                class="w-1.5 h-1.5 bg-brand-gold rounded-full mr-2"></span>No es motivación vacía: es
+                            energía + estructura.</li>
+                        <li class="flex items-center"><span
+                                class="w-1.5 h-1.5 bg-brand-gold rounded-full mr-2"></span>Tenés un método que sostiene
+                            la experiencia.</li>
+                        <li class="flex items-center"><span
+                                class="w-1.5 h-1.5 bg-brand-gold rounded-full mr-2"></span>Se convoca desde la
+                            presencia, sin prometer fantasías.</li>
+                    </ul>
+                    <p class="mt-8 font-serif italic text-brand-700 text-lg">
+                        “Cuando tu Norte es real, tu energía se ordena… y el camino se vuelve evidente.”
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking / Offer Section -->
+    <section id="reservar" class="py-24 bg-brand-cream relative overflow-hidden">
+        <div class="max-w-4xl mx-auto px-4 relative z-10">
+            <div class="bg-white rounded-3xl shadow-2xl overflow-hidden border border-brand-100">
+                <div class="bg-brand-900 py-6 px-8 text-center">
+                    <h2 class="font-serif text-3xl text-white">Acceso Inmediato</h2>
+                    <p class="text-brand-200 mt-2">Ingreso directo al Classroom de Go High Level</p>
+                </div>
+
+                <div class="p-8 md:p-12">
+                    <div class="flex justify-center mb-8">
+                        <div class="text-center">
+                            <span class="block text-5xl font-serif font-bold text-brand-gold">USD 33</span>
+                            <span class="text-gray-400 text-sm uppercase tracking-widest">Pago Único</span>
+                        </div>
+                    </div>
+
+                    <!-- Placeholder for User Form -->
+                    <div id="registration-form" class="w-full bg-white rounded-xl overflow-hidden mb-8">
+                        <iframe src="https://link.apisystem.tech/widget/form/wktWOMD7b6lWSSUwCBSO"
+                            style="width:100%;border:none;border-radius:4px;min-height:500px;" scrolling="no"
+                            id="inline-wktWOMD7b6lWSSUwCBSO" title="Formulario de Inscripción">
+                        </iframe>
+                        <script src="https://link.apisystem.tech/js/form_embed.js"></script>
+                    </div>
+                </div>
+            </div>
+
+            <p class="text-center mt-12 text-brand-500 font-serif italic opacity-70">
+                ✨ Este encuentro está pensado para un grupo íntimo de almas que quieran empezar el año con verdad.
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-brand-dark text-white py-12 border-t border-brand-800">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <img src="https://storage.googleapis.com/msgsndr/uuaiNCJCRvymWQ2ejuex/media/69660bb495f9f9cee401f126.png"
+                alt="Joaquin Alterman"
+                class="h-12 w-auto mx-auto mb-6 opacity-80 grayscale hover:grayscale-0 transition-all">
+            <p class="text-brand-300 text-sm">© 2026 Joaquín Alterman. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+</body>
+
+</html>
